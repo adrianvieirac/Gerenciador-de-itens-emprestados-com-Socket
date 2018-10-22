@@ -13,7 +13,8 @@
 typedef struct
 {
 	char coisa[30];
-	char nome[50];
+	char nome_emprestou[50];
+	char nome_emprestado[50];
 	int data_emp[3];
 	int data_dev[3];
 	int devo;
@@ -34,7 +35,14 @@ int opcoes(void)
 	printf("COISAS EMPRESTADAS\n\n1 - Listar Itens\n2 - Itens Atrasados\n3 - Itens Devolvidos\n4 - Cadastrar Itens\n5 - Remover Itens\n0 - Fechar Programa\n\n");
 }
 
-int main(int argc, char const *argv[])
+int main()
+{
+	menu();
+
+	return 0;
+}
+
+void menu()
 {
 	//variables
 	int op;
@@ -84,12 +92,6 @@ int main(int argc, char const *argv[])
 		}
 	}while(op != 0);
 
-	return 0;
-}
-
-void menu()
-{
-
 }
 
 void listar()
@@ -101,8 +103,9 @@ void listar()
 		if (coisas[i].ativo == 1)
 		{
 			printf("\nID: %d\n", i+1);
-			printf("Iten: %s\n", coisas[i].coisa);
-			printf("Nome: %s\n", coisas[i].nome);
+			printf("Item: %s\n", coisas[i].coisa);
+			printf("De: %s\n", coisas[i].nome_emprestou);
+			printf("Para: %s\n", coisas[i].nome_emprestado);
 			printf("Data de emprestimo: %d/%d/%d\n", coisas[i].data_emp[0], coisas[i].data_emp[1], coisas[i].data_emp[2]);
 			printf("Data de devolucao: %d/%d/%d\n", coisas[i].data_dev[0], coisas[i].data_dev[1], coisas[i].data_dev[2]);
 			printf("\n--------------------------\n");
@@ -132,7 +135,8 @@ void devolvidos()
 			{
 				printf("\nID: %d\n", i+1);
 				printf("Iten: %s\n", coisas[i].coisa);
-				printf("Nome: %s\n", coisas[i].nome);
+				printf("De: %s\n", coisas[i].nome_emprestou);
+				printf("Para: %s\n", coisas[i].nome_emprestado);
 				printf("Data de emprestimo: %d/%d/%d\n", coisas[i].data_emp[0], coisas[i].data_emp[1], coisas[i].data_emp[2]);
 				printf("Data de devolucao: %d/%d/%d\n", coisas[i].data_dev[0], coisas[i].data_dev[1], coisas[i].data_dev[2]);
 				printf("\n--------------------------\n");
@@ -156,7 +160,8 @@ void cadastrar_coisas()
 {
 	int op, op_aux;
 	char coisa[30];
-	char nome[50];
+	char nome_emprestou[50];
+	char nome_emprestado[50];
 	int data_emp[3];
 	int data_dev[3];
 	int i;
@@ -166,8 +171,11 @@ void cadastrar_coisas()
 		printf("\nItem Emprestado: ");
 		fgets(coisa, sizeof(coisa), stdin);
 
+		printf("\nNome da pessoa que emprestou: ");
+		fgets(nome_emprestou, sizeof(nome_emprestou), stdin);
+
 		printf("\nNome da pessoa a quem foi emprestado: ");
-		fgets(nome, sizeof(nome), stdin);
+		fgets(nome_emprestado, sizeof(nome_emprestado), stdin);
 
 		printf("\nDia, mes e ano que foi emprestado: ");
 		scanf("%d%d%d", &data_emp[0], &data_emp[1], &data_emp[2]);
@@ -192,7 +200,9 @@ void cadastrar_coisas()
 			{
 				strcpy(coisas[i].coisa, coisa);
 
-				strcpy(coisas[i].nome, nome);
+				strcpy(coisas[i].nome_emprestou, nome_emprestou);
+
+				strcpy(coisas[i].nome_emprestado, nome_emprestado);
 
 				coisas[i].data_emp[0] = data_emp[0];
 				coisas[i].data_emp[1] = data_emp[1];
