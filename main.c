@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #define MAX_COISAS 50
 
 //definindo se e WIN32 ou UNIX
@@ -118,7 +119,37 @@ void listar()
 
 void atrasados()
 {
-
+	int i;
+	int data[3];
+	int atrasado = 1;
+	time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
+	data[2] = tm.tm_year + 1900;
+	data[1] = tm.tm_mon + 1;
+	data[0] = tm.tm_mday;
+	
+	for(i = 0; i < MAX_COISAS; ++i)
+	{
+		if(data[2] <= coisas[i].data_dev[2] && data[1] <= coisas[i].data_dev[1] && data[0] <= coisas[i].data_dev[0])
+		{
+			atrasado = 0;
+		}
+		
+		if(atrasado)
+		{
+			printf("\nID: %d\n", i+1);
+			printf("Iten: %s\n", coisas[i].coisa);
+			printf("De: %s\n", coisas[i].nome_emprestou);
+			printf("Para: %s\n", coisas[i].nome_emprestado);
+			printf("Data de emprestimo: %d/%d/%d\n", coisas[i].data_emp[0], coisas[i].data_emp[1], coisas[i].data_emp[2]);
+			printf("Data de devolucao: %d/%d/%d\n", coisas[i].data_dev[0], coisas[i].data_dev[1], coisas[i].data_dev[2]);
+			printf("\n--------------------------\n");
+			
+		}
+		
+	}
+	setbuf(stdin, NULL);
+	getchar();
 }
 
 void devolvidos()
@@ -158,7 +189,9 @@ void devolvidos()
 
 void cadastrar_coisas()
 {
-	int op, op_aux;
+	time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
+	int op, op_aux, aux;
 	char coisa[30];
 	char nome_emprestou[50];
 	char nome_emprestado[50];
@@ -177,8 +210,19 @@ void cadastrar_coisas()
 		printf("\nNome da pessoa a quem foi emprestado: ");
 		fgets(nome_emprestado, sizeof(nome_emprestado), stdin);
 
-		printf("\nDia, mes e ano que foi emprestado: ");
-		scanf("%d%d%d", &data_emp[0], &data_emp[1], &data_emp[2]);
+		printf("1 - Usar data atual para cadastra o Item\n0 - Digitar data do emprestimo\n");
+		scanf("%d", &aux);
+		if(aux == 1)
+		{
+			data_emp[0] = tm.tm_mday;
+			data_emp[1] = tm.tm_mon + 1;
+			data_emp[2] = tm.tm_year + 1900;
+		}
+		else
+		{
+			printf("\nDia, mes e ano que foi emprestado: ");
+			scanf("%d%d%d", &data_emp[0], &data_emp[1], &data_emp[2]);
+		}
 
 		printf("\nDeseja cadastra data de devolucao?\n1 - sim\n0 - nao\n");
 		scanf("%d", &op_aux);
@@ -227,5 +271,16 @@ void cadastrar_coisas()
 
 void remover_coisas()
 {
-
+	int i, op;
+	int id;
+	listar();
+	do{
+		printf("\nDigite o ID do item para remover: ");
+		scanf("%d", &id);
+		--id;
+		coisas[id].ativo = 0;
+		
+		printf("\n1 - continuar removendo\n0 - sair\n");
+		scanf("%d", &op);
+	}while(op != 0);
 }
