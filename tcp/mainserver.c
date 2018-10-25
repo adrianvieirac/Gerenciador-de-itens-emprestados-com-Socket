@@ -50,6 +50,8 @@ void printar();
 
 int opcoes(void)
 {
+	aux = 0;
+	send(skt, &aux, sizeof(aux), 0);
 	printf("COISAS EMPRESTADAS\n\n1 - Listar Itens\n2 - Itens Atrasados\n3 - Itens Devolvidos\n4 - Cadastrar Itens\n5 - Remover Itens\n0 - Fechar Programa\n\n");
 	strcpy(mensagem,"COISAS EMPRESTADAS\n\n1 - Listar Itens\n2 - Itens Atrasados\n3 - Itens Devolvidos\n4 - Cadastrar Itens\n5 - Remover Itens\n0 - Fechar Programa");
 	send(skt, mensagem, strlen(mensagem), 0);
