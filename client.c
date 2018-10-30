@@ -41,34 +41,41 @@ int main ()
     printf(">> Envie /x pra sair \n\n");
 
     int out;
-    int in
+    int in;
     int inteiro;
 
     while(1)
     {
-        //recebendo mensagem do programa
-        recv(skt, &out, sizeof(out), 0);
-        if (out == 1)
+        //escolha para receber mensagem inteiro ou de texto
+        recv(skt, &in, 4, 0);
+
+        if (in == 1)//inteiro
         {
-            recv(skt, &inteiro, sizeof(inteiro), 0);
-            printf("%d", inteiro);
+            recv(skt, &in, 4, 0);
+            printf("%d", in);
         }
-        else if (out == 0)
+        else if (in == 0)//texto
         {
             recv(skt, mensagem, BYTE, 0);
             printf("%s", mensagem);
         }
+        else if (in == 3)
+        {
+            system("clear");
+        }
 
         //vendo que o programa espera receber int ou char
-        recv(skt, &in, sizeof(in), 0);
-        if (in == 1)
+        recv(skt, &in, 4, 0);
+
+        if (in == 1)//inteiro
         {
-            scanf("%d", &in);
-            send(skt, &in, sizeof(in), 0);
+            scanf("%d", &out);
+            send(skt, &out, 4, 0);
         }
-        else if (in == 0)
+        else if (in == 0)//texto
         {
-            fgets(mensagem, sizeof(mensagem), stdin);
+            setbuf(stdin, NULL);
+            fgets(mensagem, BYTE, stdin);
             send(skt, mensagem, BYTE, 0);
         }
 
