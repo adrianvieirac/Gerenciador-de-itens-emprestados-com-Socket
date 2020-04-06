@@ -1,4 +1,4 @@
-# Projeto-P1
+# Projeto Programação 1
 Gerenciador de itens emprestados com Socket em Linguagem C
 
 - [main.c](main.c) - Menu para escolher entre local e com Socket
