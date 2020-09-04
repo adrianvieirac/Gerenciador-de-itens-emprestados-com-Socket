@@ -1,5 +1,4 @@
-# Projeto Programação 1
-Gerenciador de itens emprestados com Socket em Linguagem C
+# Gerenciador de itens emprestados com Socket em Linguagem C
 
 - [main.c](main.c) - Menu para escolher entre local e com Socket
 - [mainlocal.c](mainlocal.c) - Progama local
